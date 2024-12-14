@@ -19,9 +19,16 @@ function PrintPage($body, $year) {
 
 try {
 
-	// $department = $_POST['department'];
+	$department = $_POST['department'];
 	
 	$year = $_POST['year'];
+
+	$culture = $_POST['culture'];
+	$period = $_POST['period'];
+
+	$length = $_POST['length'];
+	$width = $_POST['width'];
+	$height = $_POST['height'];
 	
 	$body = "";
 	
