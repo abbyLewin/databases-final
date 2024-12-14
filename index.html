@@ -1,1 +1,43 @@
-Hello World
+<!DOCTYPE html>
+<html>
+<head>
+<title>Allen Memorial Art Museum</title>
+
+<style>
+.formLabel
+{
+        font-size: 12;
+        font-weight: bold;
+}
+
+#oberlinLogo
+{
+        width: 2cm;
+        height: 2cm;
+}
+</style>
+</head>
+
+<body onload=loadDoc()>
+
+<h1>The Allen Memorial Art Museum Database</h1>
+
+<div>
+<form action="dbProject.php" method="POST">
+        </div>
+        <div class='inputGroup'>
+                <label class="formLabel">What year are you interested in?</label>
+                <input type="range"  name="year" id="year" min="-2300" max="2024" value="0" 
+                oninput="rangeValue.innerText = this.value">
+                <p id="rangeValue">0</p>
+
+        <div class='inputGroup'>
+                <input type='submit'></input>
+        </div>
+
+</form>
+</div>
+
+</body>
+</html>
+
