@@ -13,13 +13,13 @@ function PrintPage($body, $year) {
 	print("</head>\n<body>\n");
 	print("<h1>Objects from the year $year</h1>\n");
 	print("<div class='formOutput'>$body\n</div>\n");
-	print("</body>\n</html>\n");\
+	print("</body>\n</html>\n");
 }
 
 
 try {
 
-	$department = $_POST['department'];
+	// $department = $_POST['department'];
 	
 	$year = $_POST['year'];
 	
@@ -36,10 +36,10 @@ try {
 		'SELECT title, artist, exact AS date, description
 		FROM object 
 			LEFT JOIN date 
-				ON object.dateID == date.dateID 
+				ON object.dateID = date.dateID 
 			LEFT JOIN description 
-				ON object.descriptionID == description.description 
-		WHERE date.min >= :year AND date.max <= :year');
+				ON object.descriptionID = description.descriptionID 
+		WHERE :year BETWEEN date.min AND date.max');
 
 
 
@@ -52,8 +52,7 @@ try {
 			"Description: " . $val['description'] .
 			"</p>\n";
   }
-	
-	$body .= "</table>\n";
+
 	PrintPage($body, $year);
 
 }
