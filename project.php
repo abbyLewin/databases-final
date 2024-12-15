@@ -7,11 +7,13 @@ $dbName         = "aotoole";
 $user           = "aotoole";
 $pw             = "Oberlin@123";
 
-function PrintPage($body, $year) {
+
+function PrintPage($body, $year, $department) {
 	print("<!DOCTYPE html>\n");
 	print("<html>\n<head>\n<title>This is the AMAM handler!</title>\n");
 	print("</head>\n<body>\n");
 	print("<h1>Objects from the year $year</h1>\n");
+	print("<h2>From department $department</h2>\n");
 	print("<div class='formOutput'>$body\n</div>\n");
 	print("</body>\n</html>\n");
 }
@@ -35,17 +37,20 @@ try {
 	$conn = new PDO("mysql:host=$serverName;dbname=$dbName",
                   $user, $pw);
 	
-	// set the PDO error mode to exception
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
+	$stmt = $conn->prepare("SELECT DISTINCT department FROM culture");
+	$stmt->execute();
 
 	$stmt = $conn->prepare(
-		'SELECT title, artist, exact AS date, description
+		'SELECT title, artist, exact AS date, description, department
 		FROM object 
 			LEFT JOIN date 
 				ON object.dateID = date.dateID 
 			LEFT JOIN description 
-				ON object.descriptionID = description.descriptionID 
+				ON object.descriptionID = description.descriptionID
+			LEFT JOIN culture
+				ON object.cultureID = culture.cultureID
 		WHERE :year BETWEEN date.min AND date.max');
 
 
@@ -56,11 +61,12 @@ try {
 		$body .= "<p>" . "Title: " . $val['title'] . "<br>" .
 			"Artist: " . $val['artist'] . "<br>" . 
 			"Date: " . $val['date'] . "<br>" . 
-			"Description: " . $val['description'] .
+			"Description: " . $val['description'] . "<br>" .
+			"Department: " . $val['department'] .
 			"</p>\n";
   }
 
-	PrintPage($body, $year);
+	PrintPage($body, $year, $department);
 
 }
 

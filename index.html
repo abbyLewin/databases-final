@@ -24,12 +24,21 @@
 
 <div>
 <form action="project.php" method="POST">
-        </div>
+	<div class='inputGroup'>
+		<label class="formLabel">What department are you interested in?</label>
+		<select name="department" id="department" value="All departments" onselect="departmentName.innerText = this.value">
+                        <option id="departmentName">All Departments</option>
+                        
+		</select>
+	</div>
+
+
         <div class='inputGroup'>
                 <label class="formLabel">What year are you interested in?</label>
                 <input type="range"  name="year" id="year" min="-2300" max="2024" value="0" 
                 oninput="rangeValue.innerText = this.value">
                 <p id="rangeValue">0</p>
+	</div>
 
         <div class='inputGroup'>
                 <input type='submit'></input>
@@ -40,4 +49,3 @@
 
 </body>
 </html>
-
