@@ -51,11 +51,11 @@ try {
 				ON object.descriptionID = description.descriptionID
 			LEFT JOIN culture
 				ON object.cultureID = culture.cultureID
-		WHERE :year BETWEEN date.min AND date.max');
+		WHERE culture.department = :department AND :year BETWEEN date.min AND date.max');
 
 
 
-  	$stmt->execute( array(':year' => $year) );
+  	$stmt->execute( array(':department' => $department, ':year' => $year) );
 
   	foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $key =>$val ) {
 		$body .= "<p>" . "Title: " . $val['title'] . "<br>" .
