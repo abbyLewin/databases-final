@@ -35,7 +35,7 @@ function PrintPage($body, $year, $department, $artist) {
 		print("<h2>Showing results for artist: $artist</h2>\n");
 	}
 	if ($department) {
-		print("<h2>From department $department</h2>\n");
+		print("<h2>Art from $department</h2>\n");
 	}
 	print("<div class='formOutput'>$body\n</div>\n");
 	print("</body>\n</html>\n");
@@ -72,7 +72,9 @@ try {
               WHERE 1';
 
 	if ($department) {
-		$query .= ' AND culture.department = :department';
+		if (strcmp($department, "All departments") != 0) {
+			$query .= ' AND culture.department = :department';
+		}
 	}
 
 	if ($year) {
