@@ -62,6 +62,20 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
                 }
                 ?>
                 </select>
+	</div>
+
+	<div class='inputGroup'>
+                <label for='culture'>Select Culture:</label>
+                <select name='culture'>
+                        <option value="All cultures">All cultures</option>
+                <?php
+                $stmt = $conn->prepare("SELECT DISTINCT name FROM culture");
+                $stmt->execute();
+                foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                    echo "<option value='" . $row['name'] . "'>" . $row['name'] . "</option>";
+                }
+                ?>
+                </select>
         </div>
 
         <div class="inputGroup">
