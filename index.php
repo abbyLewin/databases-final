@@ -2,7 +2,6 @@
 
 $serverName     = "sql.cs.oberlin.edu";
 $dbName         = "aotoole";
-/* $user                = "rjhtest"; */
 
 $user           = "aotoole";
 $pw             = "Oberlin@123";
@@ -18,6 +17,7 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="style.css">
 <title>Allen Memorial Art Museum</title>
 
 <style>
@@ -42,6 +42,7 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
 <div>
 <form action="project.php" method="POST">
 
+<h3>Leave year at 0 to view all art in the selected department!</h3>
         <div class='inputGroup'>
                 <label class="formLabel">What year are you interested in?</label>
                 <input type="range"  name="year" id="year" min="-2300" max="2024" value="0" 
@@ -60,6 +61,11 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
                 }
                 ?>
                 </select>
+        </div>
+
+        <div class="inputGroup">
+                <label for='artist'>Search Artist:</label>
+                <input type="text" name ="artist" placeholder="Andy Warhol..." value="<?php echo isset($_POST['artist']) ? $_POST['artist'] : ''; ?>">
         </div>
 
         <div class='inputGroup'>
