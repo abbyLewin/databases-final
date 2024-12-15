@@ -69,10 +69,24 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
                 <select name='culture'>
                         <option value="All cultures">All cultures</option>
                 <?php
-                $stmt = $conn->prepare("SELECT DISTINCT name FROM culture");
+                $stmt = $conn->prepare("SELECT DISTINCT name FROM culture WHERE name NOT LIKE 'NA' AND name NOT LIKE 'unknown'");
                 $stmt->execute();
                 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
                     echo "<option value='" . $row['name'] . "'>" . $row['name'] . "</option>";
+                }
+                ?>
+                </select>
+	</div>
+
+	<div class='inputGroup'>
+                <label for='period'>Select Period/Dynasty:</label>
+                <select name='period'>
+                        <option value="All periods">All periods</option>
+                <?php
+                $stmt = $conn->prepare("SELECT DISTINCT period FROM culture WHERE period NOT LIKE 'NA'");
+                $stmt->execute();
+                foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                    echo "<option value='" . $row['period'] . "'>" . $row['period'] . "</option>";
                 }
                 ?>
                 </select>

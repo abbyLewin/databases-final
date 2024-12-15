@@ -24,7 +24,7 @@ $dbName         = "aotoole";
 $user           = "aotoole";
 $pw             = "Oberlin@123";
 
-function PrintPage($body, $year, $department, $culture, $artist) {
+function PrintPage($body, $year, $department, $culture, $period, $artist) {
 	print("<!DOCTYPE html>\n");
 	print("<html>\n<head>\n<title>This is the AMAM handler!</title>\n");
 	print("</head>\n<body>\n");
@@ -39,7 +39,10 @@ function PrintPage($body, $year, $department, $culture, $artist) {
 	}
 	if ($culture) {
                 print("<h2>Originating from $culture culture</h2>\n");
-        }
+	}
+	if ($period) {
+		print("<h3>From the $period</h3>\n");
+	}
 	print("<div class='formOutput'>$body\n</div>\n");
 	print("</body>\n</html>\n");
 }
@@ -88,6 +91,11 @@ try {
 			$query .= ' AND culture.name = :culture';
 		}
 	}
+	if ($period) {
+                if (strcmp($culture, "All periods") != 0) {
+                        $query .= ' AND culture.period = :period';
+                }
+        }
 
 	if ($year) {
 		$query .= ' AND :year BETWEEN date.min AND date.max';
@@ -123,6 +131,12 @@ try {
 		}
 	}
 
+	if ($period) {
+                if (strcmp($culture, "All periods") != 0) {
+                        $stmt->bindParam(':period', $period, PDO::PARAM_STR);
+                }
+        }
+
 	if ($year) {
 		$stmt->bindParam(':year', $year, PDO::PARAM_INT);
 	}
@@ -155,7 +169,7 @@ try {
 
 	
 
-	PrintPage($body, $year, $department, $culture, $artist);
+	PrintPage($body, $year, $department, $culture, $period, $artist);
 
 }
 
