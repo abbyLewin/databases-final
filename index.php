@@ -52,7 +52,8 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
 
         <div class='inputGroup'>
                 <label for='department'>Select Department:</label>
-                <select name='department'>
+		<select name='department'>
+			<option value="All departments">All departments</option>
                 <?php
                 $stmt = $conn->prepare("SELECT DISTINCT department FROM culture");
                 $stmt->execute();
@@ -66,6 +67,21 @@ $conn = new PDO("mysql:host=$serverName;dbname=$dbName",
         <div class="inputGroup">
                 <label for='artist'>Search Artist:</label>
                 <input type="text" name ="artist" placeholder="Andy Warhol..." value="<?php echo isset($_POST['artist']) ? $_POST['artist'] : ''; ?>">
+	</div>
+
+	<p>Enter Dimensions (optional):</p>
+
+	<div class="inputGroup">
+		<label for='length'>Enter Length:</label>
+		<input type="number" name="length" min="0" value="<?php echo isset($_POST['length']) ? $_POST['length'] : ''; ?>">
+	</div>
+	<div class="inputGroup">
+                <label for='width'>Enter Width:</label>
+                <input type="number" name="width" min="0" value="<?php echo isset($_POST['width']) ? $_POST['width'] : ''; ?>">
+	</div>
+	<div class="inputGroup">
+                <label for='height'>Enter Length:</label>
+                <input type="number" name="height" min="0" value="<?php echo isset($_POST['height']) ? $_POST['height'] : ''; ?>">
         </div>
 
         <div class='inputGroup'>

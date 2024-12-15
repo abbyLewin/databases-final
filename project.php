@@ -64,11 +64,15 @@ try {
 	
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$query = 'SELECT title, artist, exact AS date, description, department
+	$query = 'SELECT title, artist, exact AS date, description, department, 
+		dimensions.length AS length,
+		dimensions.width AS width,
+		dimensions.height AS height
               FROM object
               LEFT JOIN date ON object.dateID = date.dateID
               LEFT JOIN description ON object.descriptionID = description.descriptionID
-              LEFT JOIN culture ON object.cultureID = culture.cultureID
+	      LEFT JOIN culture ON object.cultureID = culture.cultureID
+	      LEFT JOIN dimensions ON object.dimensionsID = dimensions.dimensionsID
               WHERE 1';
 
 	if ($department) {
@@ -85,11 +89,23 @@ try {
 		$query .= ' AND object.artist LIKE :artist';
 	}
 
+	if ($length) {
+                $query .= ' AND dimensions.length LIKE :length';
+	}
+	if ($width) {
+                $query .= ' AND dimensions.width LIKE :width';
+	}
+	if ($height) {
+                $query .= ' AND dimensions.height LIKE :height';
+        }
+
 
 	$stmt = $conn->prepare($query);
 
 	if ($department) {
-		$stmt->bindParam(':department', $department, PDO::PARAM_STR);
+		if (strcmp($department, "All departments") != 0) {
+			$stmt->bindParam(':department', $department, PDO::PARAM_STR);
+		}
 	}
 
 	if ($year) {
@@ -98,19 +114,30 @@ try {
 	if ($artist) {
 		$stmt->bindParam(':artist', $artist, PDO::PARAM_STR);
 	}
-	$stmt->bindParam(':department', $department, PDO::PARAM_STR);
-
+	if ($length) {
+		$length = $length .' ' . '%';
+                $stmt->bindParam(':length', $length, PDO::PARAM_STR);
+        }
+	if ($width) {
+                $width = $width .' ' . '%';
+                $stmt->bindParam(':width', $width, PDO::PARAM_STR);
+	}
+	if ($height) {
+                $height = $height .' ' . '%';
+                $stmt->bindParam(':height', $height, PDO::PARAM_STR);
+        }
 	
 	$stmt->execute();
 
-	
 	foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-		$body .= "<p>Title: " . $row['title'] . "<br>" .
-			"Artist: " . $row['artist'] . "<br>" .
-			"Date: " . $row['date'] . "<br>" .
+                $body .= "<p>Title: " . $row['title'] . "<br>" .
+                        "Artist: " . $row['artist'] . "<br>" .
+                        "Date: " . $row['date'] . "<br>" .
 			"Description: " . $row['description'] . "<br>" .
-			"Department: " . $row['department'] . "</p>\n";
+			"Dimensions: " . $row['length'] . ", " . $row['width'] . ", " . $row['height'] . "<br>" .
+                        "Department: " . $row['department'] . "</p>\n";
 	}
+
 	
 
 	PrintPage($body, $year, $department, $artist);
