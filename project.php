@@ -92,7 +92,7 @@ try {
 		}
 	}
 	if ($period) {
-                if (strcmp($culture, "All periods") != 0) {
+                if (strcmp($period, "All periods") != 0) {
                         $query .= ' AND culture.period = :period';
                 }
         }
@@ -132,7 +132,7 @@ try {
 	}
 
 	if ($period) {
-                if (strcmp($culture, "All periods") != 0) {
+                if (strcmp($period, "All periods") != 0) {
                         $stmt->bindParam(':period', $period, PDO::PARAM_STR);
                 }
         }
